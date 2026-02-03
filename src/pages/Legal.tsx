@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { FileText } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ReactMarkdown from 'react-markdown';
+import { loadLegalPage } from '../lib/contentLoader';
 
 export const Legal = () => {
   const { language, isRTL } = useLanguage();
   const [content, setContent] = useState<any>(null);
 
   useEffect(() => {
-    fetch('/content/pages/legal.json')
-      .then(res => res.json())
+    loadLegalPage()
       .then(data => setContent(data))
       .catch(err => console.error('Error loading legal content:', err));
   }, []);

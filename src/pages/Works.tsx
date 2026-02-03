@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Calendar, Image as ImageIcon } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { loadAllWorks } from '../lib/contentLoader';
 
 interface Work {
+  id?: string;
   titleAr: string;
   titleFr: string;
   descriptionAr: string;
@@ -18,26 +20,12 @@ export const Works = () => {
   const [selectedWork, setSelectedWork] = useState<Work | null>(null);
 
   useEffect(() => {
-    const workFiles = [
-      'winter-warmth-campaign',
-      'well-38-inauguration',
-      'mawlid-distribution',
-      'itikaf-meals',
-      'iftar-needy-families'
-    ];
-
-    Promise.all(
-      workFiles.map(file =>
-        fetch(`/content/works/${file}.json`).then(res => res.json())
-      )
-    )
-      .then(loadedWorks => {
-        const sorted = loadedWorks.sort((a, b) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setWorks(sorted);
-      })
-      .catch(err => console.error('Error loading works:', err));
+    try {
+      const loadedWorks = loadAllWorks();
+      setWorks(loadedWorks);
+    } catch (err) {
+      console.error('Error loading works:', err);
+    }
   }, []);
 
   const formatDate = (dateString: string) => {
