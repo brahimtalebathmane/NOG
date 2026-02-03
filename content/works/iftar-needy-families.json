@@ -1,11 +1,39 @@
-{
-  "titleAr": "إفطار الأسر المتعففة",
-  "titleFr": "Iftar pour les familles nécessiteuses",
-  "descriptionAr": "توزيع وجبات الإفطار اليومية على الأسر المتعففة خلال شهر رمضان المبارك.",
-  "descriptionFr": "Distribution quotidienne de repas d'Iftar aux familles nécessiteuses pendant le mois béni du Ramadan.",
-  "images": [
-    "https://i.postimg.cc/7ZNgr2g3/486595005-1419040652809735-2510070477372473978-n.jpg"
-  ],
-  "date": "2024-03-20T00:00:00.000Z",
-  "featured": true
+// src/pages/Works.jsx
+import React, { useEffect, useState } from "react";
+
+export function Works() {
+  const [works, setWorks] = useState([]);
+
+  useEffect(() => {
+    const importAll = (r) => r.keys().map(r);
+    try {
+      const workModules = importAll(require.context("../content/works", false, /\.json$/));
+      const workData = workModules.map((mod) => mod.default || mod);
+      // يمكن تمييز الأنشطة المميزة إذا أحببت
+      setWorks(workData);
+    } catch (err) {
+      console.error("Error loading works:", err);
+    }
+  }, []);
+
+  if (!works.length) return <p>Loading works...</p>;
+
+  return (
+    <section className="p-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {works.map((work, index) => (
+        <div key={index} className="border rounded-lg p-4 shadow-sm">
+          <h2 className="text-lg font-bold">{work.titleAr}</h2>
+          <h3 className="text-md text-gray-500">{work.titleFr}</h3>
+          <p className="mt-2">{work.descriptionAr}</p>
+          <p className="mt-1 text-gray-700">{work.descriptionFr}</p>
+          <div className="mt-2 space-y-2">
+            {work.images.map((url, i) => (
+              <img key={i} src={url} alt={work.titleAr} className="w-full rounded" />
+            ))}
+          </div>
+          <p className="text-sm text-gray-400 mt-2">{new Date(work.date).toLocaleDateString()}</p>
+        </div>
+      ))}
+    </section>
+  );
 }
