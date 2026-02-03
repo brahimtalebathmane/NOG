@@ -1,8 +1,35 @@
-{
-  "titleAr": "مرحباً بكم في موقعنا الجديد",
-  "titleFr": "Bienvenue sur notre nouveau site",
-  "contentAr": "يسعدنا أن نرحب بكم في الموقع الإلكتروني الجديد لجمعية مانقص مال من صدقة. نسأل الله أن يتقبل منا ومنكم صالح الأعمال.",
-  "contentFr": "Nous sommes heureux de vous accueillir sur le nouveau site Web de l'Association Manqass Mal Min Sadaqa. Nous demandons à Allah d'accepter nos bonnes actions et les vôtres.",
-  "date": "2024-01-01T00:00:00.000Z",
-  "published": true
+// src/pages/Announcements.jsx
+import React, { useEffect, useState } from "react";
+
+export function Announcements() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    // جلب كل JSON من مجلد الإعلانات/المنشورات
+    const importAll = (r) => r.keys().map(r);
+    try {
+      const postModules = importAll(require.context("../content/announcements", false, /\.json$/));
+      const postData = postModules.map((mod) => mod.default || mod); // دعم ES Module & CommonJS
+      const publishedPosts = postData.filter(post => post.published);
+      setPosts(publishedPosts);
+    } catch (err) {
+      console.error("Error loading announcements:", err);
+    }
+  }, []);
+
+  if (!posts.length) return <p>Loading announcements...</p>;
+
+  return (
+    <section className="p-6 space-y-6">
+      {posts.map((post, index) => (
+        <div key={index} className="border rounded-lg p-4 shadow-sm">
+          <h2 className="text-xl font-bold">{post.titleAr}</h2>
+          <h3 className="text-md text-gray-500">{post.titleFr}</h3>
+          <p className="mt-2">{post.contentAr}</p>
+          <p className="mt-1 text-gray-700">{post.contentFr}</p>
+          <p className="text-sm text-gray-400 mt-2">{new Date(post.date).toLocaleDateString()}</p>
+        </div>
+      ))}
+    </section>
+  );
 }
