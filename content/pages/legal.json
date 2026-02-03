@@ -1,6 +1,26 @@
-{
-  "titleAr": "النظام الأساسي",
-  "titleFr": "Règlement intérieur",
-  "contentAr": "# النظام الأساسي\n\n## الفصل الأول: الهوية المهنية\n\n### المادة 1: التأسيس\nتأسست الجمعية وفقاً للقوانين المعمول بها في موريتانيا.\n\n### المادة 2: التسمية\nتسمى الجمعية: \"جمعية مانقص مال من صدقة\"\n\n### المادة 3: المقر\nيقع المقر الرئيسي للجمعية في موريتانيا.\n\n### المادة 4: الأهداف\nتهدف الجمعية إلى:\n- تحقيق التكافل الاجتماعي\n- مساعدة المحتاجين والأسر المتعففة\n- كفالة الأيتام\n- حفر الآبار\n- توزيع المساعدات الغذائية والعينية\n\n### المادة 5: الوسائل\nتحقق الجمعية أهدافها من خلال:\n- جمع التبرعات والصدقات\n- تنظيم الحملات الخيرية\n- التعاون مع الجمعيات الأخرى\n- إقامة المشاريع الخيرية\n\n### المادة 6: العضوية\nيحق لكل شخص الانضمام للجمعية وفق الشروط المحددة في النظام الداخلي.\n\n### المادة 7: الهيكل التنظيمي\nتتكون الجمعية من:\n- الجمعية العمومية\n- مجلس الإدارة\n- المكتب التنفيذي\n\n### المادة 8: الموارد المالية\nتتكون موارد الجمعية من:\n- التبرعات والصدقات\n- الهبات والوصايا\n- عائدات الأنشطة\n\n### المادة 9: الشفافية\nتلتزم الجمعية بالشفافية الكاملة في جميع معاملاتها المالية والإدارية.",
-  "contentFr": "# Règlement intérieur\n\n## Chapitre Premier: Identité professionnelle\n\n### Article 1: Fondation\nL'association a été fondée conformément aux lois en vigueur en Mauritanie.\n\n### Article 2: Dénomination\nL'association est nommée: \"Association Manqass Mal Min Sadaqa\"\n\n### Article 3: Siège\nLe siège principal de l'association est situé en Mauritanie.\n\n### Article 4: Objectifs\nL'association vise à:\n- Réaliser la solidarité sociale\n- Aider les nécessiteux et les familles démunies\n- Parrainer les orphelins\n- Creuser des puits\n- Distribuer de l'aide alimentaire et matérielle\n\n### Article 5: Moyens\nL'association réalise ses objectifs par:\n- La collecte de dons et d'aumônes\n- L'organisation de campagnes caritatives\n- La coopération avec d'autres associations\n- La réalisation de projets caritatifs\n\n### Article 6: Adhésion\nToute personne a le droit de rejoindre l'association selon les conditions définies dans le règlement intérieur.\n\n### Article 7: Structure organisationnelle\nL'association se compose de:\n- L'assemblée générale\n- Le conseil d'administration\n- Le bureau exécutif\n\n### Article 8: Ressources financières\nLes ressources de l'association proviennent de:\n- Dons et aumônes\n- Legs et donations\n- Revenus des activités\n\n### Article 9: Transparence\nL'association s'engage à une transparence totale dans toutes ses transactions financières et administratives."
+// src/pages/Legal.jsx
+import React, { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+
+export function Legal() {
+  const [legalData, setLegalData] = useState(null);
+
+  useEffect(() => {
+    fetch("/content/pages/legal.json")
+      .then(res => res.json())
+      .then(data => setLegalData(data))
+      .catch(err => console.error("Error loading Legal page:", err));
+  }, []);
+
+  if (!legalData) return <p>Loading Legal page...</p>;
+
+  return (
+    <section className="p-6 max-w-4xl mx-auto space-y-6">
+      <h1 className="text-2xl font-bold">{legalData.titleAr}</h1>
+      <ReactMarkdown className="prose">{legalData.contentAr}</ReactMarkdown>
+
+      <h1 className="text-2xl font-bold mt-8">{legalData.titleFr}</h1>
+      <ReactMarkdown className="prose">{legalData.contentFr}</ReactMarkdown>
+    </section>
+  );
 }
