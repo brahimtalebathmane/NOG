@@ -1,8 +1,26 @@
-{
-  "heroTitleAr": "مانقص مال من صدقة.",
-  "heroTitleFr": "Ce que l'on donne en charité ne diminue jamais",
-  "heroSloganAr": "مانقص مال من صدقة",
-  "heroSloganFr": "Ce que l'on donne en charité ne diminue jamais",
-  "introTextAr": "جمعية خيرية إنسانية تعمل في جميع مناطق موريتانيا لخدمة المحتاجين وإغاثة الملهوفين. نسعى لتحقيق التكافل الاجتماعي وتقديم يد العون لكل محتاج.",
-  "introTextFr": "Une association caritative et humanitaire opérant dans toutes les régions de la Mauritanie pour servir les nécessiteux et secourir les démunis. Nous œuvrons pour la solidarité sociale et l'aide à tous ceux qui en ont besoin."
+// src/pages/Home.jsx
+import React, { useEffect, useState } from "react";
+
+export function Home({ onNavigate }) {
+  const [homeData, setHomeData] = useState(null);
+
+  useEffect(() => {
+    fetch("/content/pages/home.json")
+      .then(res => res.json())
+      .then(data => setHomeData(data))
+      .catch(err => console.error("Error loading Home page:", err));
+  }, []);
+
+  if (!homeData) return <p>Loading Home page...</p>;
+
+  return (
+    <section className="p-6 max-w-4xl mx-auto space-y-6 text-center">
+      <h1 className="text-4xl font-bold">{homeData.heroTitleAr}</h1>
+      <h2 className="text-2xl text-gray-600">{homeData.heroTitleFr}</h2>
+      <p className="text-lg mt-2">{homeData.heroSloganAr}</p>
+      <p className="text-lg text-gray-600">{homeData.heroSloganFr}</p>
+      <p className="mt-4">{homeData.introTextAr}</p>
+      <p className="mt-2 text-gray-700">{homeData.introTextFr}</p>
+    </section>
+  );
 }
