@@ -1,0 +1,38 @@
+// src/pages/Advertisements.jsx
+import React, { useEffect, useState } from "react";
+
+export function Advertisements() {
+  const [ads, setAds] = useState([]);
+
+  useEffect(() => {
+    // جلب كل JSON من مجلد الإعلانات
+    const importAll = (r) => r.keys().map(r);
+    try {
+      const adModules = importAll(require.context("../content/advertisements", false, /\.json$/));
+      const adData = adModules.map((mod) => mod.default || mod); // دعم ES Module & CommonJS
+      const activeAds = adData.filter(ad => ad.active);
+      setAds(activeAds);
+    } catch (err) {
+      console.error("Error loading advertisements:", err);
+    }
+  }, []);
+
+  if (!ads.length) return <p>Loading advertisements...</p>;
+
+  return (
+    <section className="p-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {ads.map((ad, index) => (
+        <div key={index} className="border rounded-lg p-4 shadow-sm">
+          <h2 className="text-lg font-bold">{ad.titleAr}</h2>
+          <h3 className="text-md text-gray-500">{ad.titleFr}</h3>
+          <div className="mt-2 space-y-2">
+            {ad.images.map((url, i) => (
+              <img key={i} src={url} alt={ad.titleAr} className="w-full rounded" />
+            ))}
+          </div>
+          <p className="text-sm text-gray-400 mt-2">{new Date(ad.date).toLocaleDateString()}</p>
+        </div>
+      ))}
+    </section>
+  );
+}
