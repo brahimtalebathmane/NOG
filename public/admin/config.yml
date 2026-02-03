@@ -1,0 +1,78 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - name: "home"
+        label: "Home Page"
+        file: "content/pages/home.json"
+        fields:
+          - { label: "Hero Title (Arabic)", name: "heroTitleAr", widget: "string" }
+          - { label: "Hero Title (French)", name: "heroTitleFr", widget: "string" }
+          - { label: "Hero Slogan (Arabic)", name: "heroSloganAr", widget: "string" }
+          - { label: "Hero Slogan (French)", name: "heroSloganFr", widget: "string" }
+          - { label: "Intro Text (Arabic)", name: "introTextAr", widget: "text" }
+          - { label: "Intro Text (French)", name: "introTextFr", widget: "text" }
+
+      - name: "about"
+        label: "About Page"
+        file: "content/pages/about.json"
+        fields:
+          - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
+          - { label: "Title (French)", name: "titleFr", widget: "string" }
+          - { label: "Content (Arabic)", name: "contentAr", widget: "markdown" }
+          - { label: "Content (French)", name: "contentFr", widget: "markdown" }
+
+      - name: "legal"
+        label: "Legal / Internal System"
+        file: "content/pages/legal.json"
+        fields:
+          - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
+          - { label: "Title (French)", name: "titleFr", widget: "string" }
+          - { label: "Content (Arabic)", name: "contentAr", widget: "markdown" }
+          - { label: "Content (French)", name: "contentFr", widget: "markdown" }
+
+  - name: "works"
+    label: "Works / Activities"
+    folder: "content/works"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
+      - { label: "Title (French)", name: "titleFr", widget: "string" }
+      - { label: "Description (Arabic)", name: "descriptionAr", widget: "text" }
+      - { label: "Description (French)", name: "descriptionFr", widget: "text" }
+      - { label: "Images", name: "images", widget: "list", field: { label: "Image URL", name: "url", widget: "string" } }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+
+  - name: "announcements"
+    label: "Announcements"
+    folder: "content/announcements"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
+      - { label: "Title (French)", name: "titleFr", widget: "string" }
+      - { label: "Content (Arabic)", name: "contentAr", widget: "text" }
+      - { label: "Content (French)", name: "contentFr", widget: "text" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Published", name: "published", widget: "boolean", default: true }
+
+  - name: "advertisements"
+    label: "Advertisements"
+    folder: "content/advertisements"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
+      - { label: "Title (French)", name: "titleFr", widget: "string" }
+      - { label: "Images", name: "images", widget: "list", field: { label: "Image URL", name: "url", widget: "string" } }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Active", name: "active", widget: "boolean", default: true }
