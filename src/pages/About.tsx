@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { Heart, Target, Award } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ReactMarkdown from 'react-markdown';
-import { loadAboutPage } from '../lib/contentLoader';
 
 export const About = () => {
   const { language, isRTL } = useLanguage();
   const [content, setContent] = useState<any>(null);
 
   useEffect(() => {
-    loadAboutPage()
+    fetch('/content/pages/about.json')
+      .then(res => res.json())
       .then(data => setContent(data))
       .catch(err => console.error('Error loading about content:', err));
   }, []);

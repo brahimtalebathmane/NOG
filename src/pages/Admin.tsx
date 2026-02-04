@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { loadAllWorks, loadAllAdvertisements } from '../lib/contentLoader';
 
 interface Work {
   id?: string;
@@ -36,14 +35,33 @@ export const Admin = () => {
   }, []);
 
   const loadContent = () => {
-    try {
-      const loadedWorks = loadAllWorks();
-      const loadedAds = loadAllAdvertisements();
-      setWorks(loadedWorks);
-      setAdvertisements(loadedAds);
-    } catch (err) {
-      console.error('Error loading content:', err);
-    }
+    fetch('/content/works/index.json')
+      .then(res => res.json())
+      .then(fileNames => {
+        return Promise.all(
+          fileNames.map((fileName: string) =>
+            fetch(`/content/works/${fileName}.json`)
+              .then(res => res.json())
+              .then(data => ({ id: fileName, ...data }))
+          )
+        );
+      })
+      .then(loadedWorks => setWorks(loadedWorks))
+      .catch(err => console.error('Error loading works:', err));
+
+    fetch('/content/advertisements/index.json')
+      .then(res => res.json())
+      .then(fileNames => {
+        return Promise.all(
+          fileNames.map((fileName: string) =>
+            fetch(`/content/advertisements/${fileName}.json`)
+              .then(res => res.json())
+              .then(data => ({ id: fileName, ...data }))
+          )
+        );
+      })
+      .then(loadedAds => setAdvertisements(loadedAds))
+      .catch(err => console.error('Error loading advertisements:', err));
   };
 
   const handleSaveWork = (work: Work) => {

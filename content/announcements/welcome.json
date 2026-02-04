@@ -1,35 +1,8 @@
-// src/pages/Announcements.jsx
-import React, { useEffect, useState } from "react";
-
-export function Announcements() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    // جلب كل JSON من مجلد الإعلانات/المنشورات
-    const importAll = (r) => r.keys().map(r);
-    try {
-      const postModules = importAll(require.context("../content/announcements", false, /\.json$/));
-      const postData = postModules.map((mod) => mod.default || mod); // دعم ES Module & CommonJS
-      const publishedPosts = postData.filter(post => post.published);
-      setPosts(publishedPosts);
-    } catch (err) {
-      console.error("Error loading announcements:", err);
-    }
-  }, []);
-
-  if (!posts.length) return <p>Loading announcements...</p>;
-
-  return (
-    <section className="p-6 space-y-6">
-      {posts.map((post, index) => (
-        <div key={index} className="border rounded-lg p-4 shadow-sm">
-          <h2 className="text-xl font-bold">{post.titleAr}</h2>
-          <h3 className="text-md text-gray-500">{post.titleFr}</h3>
-          <p className="mt-2">{post.contentAr}</p>
-          <p className="mt-1 text-gray-700">{post.contentFr}</p>
-          <p className="text-sm text-gray-400 mt-2">{new Date(post.date).toLocaleDateString()}</p>
-        </div>
-      ))}
-    </section>
-  );
+{
+  "titleAr": "مرحباً بكم في موقع الجمعية",
+  "titleFr": "Bienvenue sur le site de l'association",
+  "contentAr": "نرحب بكم في الموقع الرسمي لجمعية مانقص مال من صدقة. نسعى من خلال هذا الموقع لتعريفكم بأنشطتنا ومشاريعنا الخيرية.",
+  "contentFr": "Nous vous souhaitons la bienvenue sur le site officiel de l'association Manqass Mal Min Sadaqa. À travers ce site, nous cherchons à vous informer de nos activités et projets caritatifs.",
+  "date": "2024-01-01T00:00:00.000Z",
+  "published": true
 }

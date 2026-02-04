@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Calendar, Image as ImageIcon } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { loadAllWorks } from '../lib/contentLoader';
 
 interface Work {
   id?: string;
@@ -20,12 +19,24 @@ export const Works = () => {
   const [selectedWork, setSelectedWork] = useState<Work | null>(null);
 
   useEffect(() => {
-    try {
-      const loadedWorks = loadAllWorks();
-      setWorks(loadedWorks);
-    } catch (err) {
-      console.error('Error loading works:', err);
-    }
+    fetch('/content/works/index.json')
+      .then(res => res.json())
+      .then(fileNames => {
+        return Promise.all(
+          fileNames.map((fileName: string) =>
+            fetch(`/content/works/${fileName}.json`)
+              .then(res => res.json())
+              .then(data => ({ id: fileName, ...data }))
+          )
+        );
+      })
+      .then(loadedWorks => {
+        const sorted = loadedWorks.sort((a, b) =>
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setWorks(sorted);
+      })
+      .catch(err => console.error('Error loading works:', err));
   }, []);
 
   const formatDate = (dateString: string) => {

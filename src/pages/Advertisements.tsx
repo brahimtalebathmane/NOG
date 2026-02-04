@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Calendar } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { loadAllAdvertisements } from '../lib/contentLoader';
 
 interface Advertisement {
   id?: string;
@@ -18,12 +17,24 @@ export const Advertisements = () => {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null);
 
   useEffect(() => {
-    try {
-      const loadedAds = loadAllAdvertisements();
-      setAdvertisements(loadedAds);
-    } catch (err) {
-      console.error('Error loading advertisements:', err);
-    }
+    fetch('/content/advertisements/index.json')
+      .then(res => res.json())
+      .then(fileNames => {
+        return Promise.all(
+          fileNames.map((fileName: string) =>
+            fetch(`/content/advertisements/${fileName}.json`)
+              .then(res => res.json())
+              .then(data => ({ id: fileName, ...data }))
+          )
+        );
+      })
+      .then(loadedAds => {
+        const sorted = loadedAds
+          .filter(ad => ad.active)
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        setAdvertisements(sorted);
+      })
+      .catch(err => console.error('Error loading advertisements:', err));
   }, []);
 
   const formatDate = (dateString: string) => {

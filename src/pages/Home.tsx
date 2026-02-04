@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Heart, Users, Droplet, HandHeart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
-import { loadHomePage, loadAllWorks } from '../lib/contentLoader';
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -24,16 +23,24 @@ export const Home = ({ onNavigate }: HomeProps) => {
   const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
 
   useEffect(() => {
-    loadHomePage()
+    fetch('/content/pages/home.json')
+      .then(res => res.json())
       .then(data => setHomeContent(data))
       .catch(err => console.error('Error loading home content:', err));
 
-    try {
-      const allWorks = loadAllWorks();
-      setFeaturedWorks(allWorks.filter(w => w.featured).slice(0, 3));
-    } catch (err) {
-      console.error('Error loading works:', err);
-    }
+    fetch('/content/works/index.json')
+      .then(res => res.json())
+      .then(fileNames => {
+        return Promise.all(
+          fileNames.map((fileName: string) =>
+            fetch(`/content/works/${fileName}.json`).then(res => res.json())
+          )
+        );
+      })
+      .then(works => {
+        setFeaturedWorks(works.filter(w => w.featured).slice(0, 3));
+      })
+      .catch(err => console.error('Error loading works:', err));
   }, []);
 
   const handleWhatsApp = () => {
