@@ -11,7 +11,7 @@ collections:
     files:
       - name: "home"
         label: "Home Page"
-        file: "content/pages/home.json"
+        file: "public/content/pages/home.json"
         fields:
           - { label: "Hero Title (Arabic)", name: "heroTitleAr", widget: "string" }
           - { label: "Hero Title (French)", name: "heroTitleFr", widget: "string" }
@@ -22,7 +22,7 @@ collections:
 
       - name: "about"
         label: "About Page"
-        file: "content/pages/about.json"
+        file: "public/content/pages/about.json"
         fields:
           - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
           - { label: "Title (French)", name: "titleFr", widget: "string" }
@@ -31,7 +31,7 @@ collections:
 
       - name: "legal"
         label: "Legal / Internal System"
-        file: "content/pages/legal.json"
+        file: "public/content/pages/legal.json"
         fields:
           - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
           - { label: "Title (French)", name: "titleFr", widget: "string" }
@@ -40,9 +40,11 @@ collections:
 
   - name: "works"
     label: "Works / Activities"
-    folder: "content/works"
+    folder: "public/content/works"
     create: true
     slug: "{{slug}}"
+    extension: "json"
+    format: "json"
     fields:
       - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
       - { label: "Title (French)", name: "titleFr", widget: "string" }
@@ -54,9 +56,11 @@ collections:
 
   - name: "announcements"
     label: "Announcements"
-    folder: "content/announcements"
+    folder: "public/content/announcements"
     create: true
     slug: "{{slug}}"
+    extension: "json"
+    format: "json"
     fields:
       - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
       - { label: "Title (French)", name: "titleFr", widget: "string" }
@@ -67,9 +71,11 @@ collections:
 
   - name: "advertisements"
     label: "Advertisements"
-    folder: "content/advertisements"
+    folder: "public/content/advertisements"
     create: true
     slug: "{{slug}}"
+    extension: "json"
+    format: "json"
     fields:
       - { label: "Title (Arabic)", name: "titleAr", widget: "string" }
       - { label: "Title (French)", name: "titleFr", widget: "string" }
