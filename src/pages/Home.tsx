@@ -82,13 +82,21 @@ export const Home = ({ onNavigate }: HomeProps) => {
 
   return (
     <div>
+      {/* Hero Section */}
       <section
-        className="relative bg-gradient-to-br from-primary to-primary-dark text-white py-20 md:py-32"
+        className="relative text-white py-20 md:py-32"
         style={{
-          backgroundImage: 'linear-gradient(135deg, rgba(0,102,51,0.95) 0%, rgba(0,153,76,0.95) 100%)',
+          backgroundImage:
+            "url('https://i.postimg.cc/9fNkQznk/180944489-2711536482471444-1968639298452916963-n.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
         }}
       >
-        <div className="container mx-auto px-4">
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        <div className="relative container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <img
               src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
@@ -111,6 +119,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
         </div>
       </section>
 
+      {/* Intro + Stats */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
@@ -141,6 +150,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
         </div>
       </section>
 
+      {/* Featured Works */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
@@ -179,6 +189,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
         </div>
       </section>
 
+      {/* CTA */}
       <section className="py-16 bg-primary text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
