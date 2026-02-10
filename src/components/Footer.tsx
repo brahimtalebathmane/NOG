@@ -18,6 +18,7 @@ export const Footer = ({ onNavigate }: FooterProps) => {
     <footer className="bg-gray-900 text-white mt-16">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Logo & Description */}
           <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="flex items-center gap-3 mb-4">
               <img
@@ -34,6 +35,7 @@ export const Footer = ({ onNavigate }: FooterProps) => {
             </p>
           </div>
 
+          {/* Quick Links */}
           <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
             <h3 className="text-lg font-bold mb-4">{t.footer.quickLinks}</h3>
             <div className="flex flex-col gap-2">
@@ -52,6 +54,7 @@ export const Footer = ({ onNavigate }: FooterProps) => {
             </div>
           </div>
 
+          {/* Contact */}
           <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
             <h3 className="text-lg font-bold mb-4">{t.footer.contact}</h3>
             <button
@@ -71,7 +74,26 @@ export const Footer = ({ onNavigate }: FooterProps) => {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+        {/* Financial Info */}
+        <div className="border-t border-gray-700 mt-8 pt-8">
+          <h3 className="text-center text-lg font-bold mb-4">
+            {language === 'ar' ? 'المعلومات المالية' : 'Informations financières'}
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto text-gray-300 text-sm">
+            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+              <p><span className="font-semibold">{language === 'ar' ? 'الترخيص:' : 'Licence:'}</span> FA 010000211309202203328</p>
+              <p><span className="font-semibold">{language === 'ar' ? 'رقم الحساب البنكي الدولي:' : 'IBAN:'}</span> MR1300018000082100067620171</p>
+            </div>
+            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+              <p><span className="font-semibold">{language === 'ar' ? 'بنكيلي:' : 'Bank:'}</span> 016288</p>
+              <p><span className="font-semibold">{language === 'ar' ? 'مصرفي:' : 'Bank ID:'}</span> 44444555</p>
+              <p><span className="font-semibold">{language === 'ar' ? 'السداد:' : 'Payment:'}</span> 03650</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Rights */}
+        <div className="border-t border-gray-700 mt-8 pt-6 text-center">
           <p className="text-gray-300 flex items-center justify-center gap-2">
             {t.footer.rights} © 2024 {t.footer.associationName}
             <Heart className="w-4 h-4 text-red-500 fill-current" />
