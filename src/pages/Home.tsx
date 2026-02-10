@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Heart, Users, Droplet, HandHeart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
+import { Advertisements } from './Advertisements';
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -90,11 +91,10 @@ export const Home = ({ onNavigate }: HomeProps) => {
             "url('https://i.postimg.cc/9fNkQznk/180944489-2711536482471444-1968639298452916963-n.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
         }}
       >
-        <div className="absolute inset-0 bg-black/50"></div>
-
+        <div className="absolute inset-0 bg-[#1b4f63]/80"></div>
         <div className="relative container mx-auto px-4 text-center">
           <img
             src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
@@ -109,60 +109,28 @@ export const Home = ({ onNavigate }: HomeProps) => {
           </p>
           <button
             onClick={handleWhatsApp}
-            className="bg-white text-primary px-8 py-4 rounded-lg text-lg font-bold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-xl"
+            className="bg-[#1b4f63] hover:bg-[#163f50] text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 shadow-xl"
           >
             {t.home.donate}
           </button>
         </div>
       </section>
 
-      {/* Intro + Stats */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <p className={`text-lg md:text-xl text-gray-700 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
-              {language === 'ar' ? homeContent.introTextAr : homeContent.introTextFr}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-xl transition-shadow"
-                >
-                  <Icon className="w-10 h-10 mx-auto mb-3 text-primary" />
-                  <div className="text-3xl font-bold text-primary mb-2">
-                    {language === 'ar' ? stat.numberAr : stat.numberFr}
-                  </div>
-                  <div className="text-gray-600 text-sm font-medium">
-                    {language === 'ar' ? stat.labelAr : stat.labelFr}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Works */}
+      {/* Featured Works Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900">{t.home.latestWorks}</h2>
             <button
               onClick={() => onNavigate('works')}
-              className="text-primary hover:text-primary-dark font-medium transition-colors"
+              className="text-[#1b4f63] hover:text-[#163f50] font-medium transition-colors"
             >
               {t.home.viewAll} ←
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            {/* 🎬 Video Card - First */}
+            {/* Video Card First */}
             <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
               <div className="relative h-48">
                 <iframe
@@ -208,10 +176,103 @@ export const Home = ({ onNavigate }: HomeProps) => {
                 </div>
               </div>
             ))}
-
           </div>
         </div>
       </section>
+
+      {/* Advertisements Section */}
+      <section className="py-12 bg-[#e6f2f5]">
+        <Advertisements />
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-xl transition-shadow"
+                >
+                  <Icon className="w-10 h-10 mx-auto mb-3 text-[#1b4f63]" />
+                  <div className="text-3xl font-bold text-[#1b4f63] mb-2">
+                    {language === 'ar' ? stat.numberAr : stat.numberFr}
+                  </div>
+                  <div className="text-gray-600 text-sm font-medium">
+                    {language === 'ar' ? stat.labelAr : stat.labelFr}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <footer className="bg-gray-900 text-white mt-16">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+              <div className="flex items-center gap-3 mb-4">
+                <img
+                  src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
+                  alt="Logo"
+                  className="h-12 w-12 object-contain"
+                />
+                <h3 className="text-xl font-bold">{t.footer.associationName}</h3>
+              </div>
+              <p className="text-gray-300 leading-relaxed">
+                {language === 'ar'
+                  ? 'جمعية خيرية إنسانية تعمل في جميع مناطق موريتانيا'
+                  : 'Association caritative opérant dans toutes les régions de Mauritanie'}
+              </p>
+              <div className="mt-4 text-gray-300 text-sm">
+                <p>الترخيص: FA 010000211309202203328</p>
+                <p>رقم الحساب البنكي الدولي: MR1300018000082100067620171</p>
+                <p>بنكيلي: 016288</p>
+                <p>مصرفي: 44444555</p>
+                <p>السداد: 03650</p>
+              </div>
+            </div>
+
+            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+              <h3 className="text-lg font-bold mb-4">{t.footer.quickLinks}</h3>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => onNavigate('home')} className="text-gray-300 hover:text-white transition-colors">
+                  {t.nav.home}
+                </button>
+                <button onClick={() => onNavigate('about')} className="text-gray-300 hover:text-white transition-colors">
+                  {t.nav.about}
+                </button>
+                <button onClick={() => onNavigate('works')} className="text-gray-300 hover:text-white transition-colors">
+                  {t.nav.works}
+                </button>
+                <button onClick={() => onNavigate('legal')} className="text-gray-300 hover:text-white transition-colors">
+                  {t.nav.legal}
+                </button>
+              </div>
+            </div>
+
+            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+              <h3 className="text-lg font-bold mb-4">{t.footer.contact}</h3>
+              <button
+                onClick={handleWhatsApp}
+                className="bg-[#1b4f63] text-white px-6 py-3 rounded-lg hover:bg-[#163f50] transition-colors font-medium w-full"
+              >
+                {t.nav.contact}
+              </button>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+            <p className="text-gray-300">
+              {t.footer.rights} © 2024 {t.footer.associationName} <Heart className="w-4 h-4 text-red-500 inline" />
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
