@@ -1,134 +1,214 @@
 import { useEffect, useState } from 'react';
-import { Calendar } from 'lucide-react';
+import { Heart, Users, Droplet, HandHeart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { translations } from '../translations';
+import { Advertisements } from './Advertisements'; // استدعاء مكون الإعلانات
 
-interface Advertisement {
-  id?: string;
-  titleAr: string;
-  titleFr: string;
-  images: string[];
-  date: string;
-  active: boolean;
+interface HomeProps {
+  onNavigate: (page: string) => void;
 }
 
-export const Advertisements = () => {
+interface Work {
+  titleAr: string;
+  titleFr: string;
+  descriptionAr: string;
+  descriptionFr: string;
+  images: string[];
+  featured: boolean;
+}
+
+export const Home = ({ onNavigate }: HomeProps) => {
   const { language, isRTL } = useLanguage();
-  const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
-  const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null);
+  const t = translations[language];
+  const [homeContent, setHomeContent] = useState<any>(null);
+  const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
 
   useEffect(() => {
-    fetch('/content/advertisements/index.json')
+    fetch('/content/pages/home.json')
+      .then(res => res.json())
+      .then(data => setHomeContent(data))
+      .catch(err => console.error('Error loading home content:', err));
+
+    fetch('/content/works/index.json')
       .then(res => res.json())
       .then(fileNames => {
         return Promise.all(
           fileNames.map((fileName: string) =>
-            fetch(`/content/advertisements/${fileName}.json`)
-              .then(res => res.json())
-              .then(data => ({ id: fileName, ...data }))
+            fetch(`/content/works/${fileName}.json`).then(res => res.json())
           )
         );
       })
-      .then(loadedAds => {
-        const sorted = loadedAds
-          .filter(ad => ad.active)
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        setAdvertisements(sorted);
+      .then(works => {
+        setFeaturedWorks(works.filter(w => w.featured).slice(0, 3));
       })
-      .catch(err => console.error('Error loading advertisements:', err));
+      .catch(err => console.error('Error loading works:', err));
   }, []);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return language === 'ar'
-      ? date.toLocaleDateString('ar-EG')
-      : date.toLocaleDateString('fr-FR');
+  const handleWhatsApp = () => {
+    window.open('https://wa.me/22244444455', '_blank');
   };
 
-  return (
-    <div className="py-12">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            {language === 'ar' ? 'الإعلانات' : 'Annonces'}
-          </h1>
-          <div className="w-24 h-1 bg-primary mx-auto mb-4"></div>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {language === 'ar'
-              ? 'آخر إعلاناتنا وحملاتنا الخيرية'
-              : 'Nos dernières annonces et campagnes caritatives'}
-          </p>
-        </div>
+  const stats = [
+    {
+      icon: Heart,
+      numberAr: '١٠٠+',
+      numberFr: '100+',
+      labelAr: 'مشروع خيري',
+      labelFr: 'Projets caritatifs'
+    },
+    {
+      icon: Users,
+      numberAr: '٥٠٠٠+',
+      numberFr: '5000+',
+      labelAr: 'أسرة مستفيدة',
+      labelFr: 'Familles bénéficiaires'
+    },
+    {
+      icon: Droplet,
+      numberAr: '٣٨',
+      numberFr: '38',
+      labelAr: 'بئر محفور',
+      labelFr: 'Puits creusés'
+    },
+    {
+      icon: HandHeart,
+      numberAr: '٢٠٠+',
+      numberFr: '200+',
+      labelAr: 'متطوع',
+      labelFr: 'Bénévoles'
+    }
+  ];
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {advertisements.map((ad, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all cursor-pointer transform hover:-translate-y-1"
-              onClick={() => setSelectedAd(ad)}
+  if (!homeContent) return null;
+
+  return (
+    <div>
+      {/* Hero Section */}
+      <section
+        className="relative text-white py-20 md:py-32"
+        style={{
+          backgroundImage:
+            "url('https://i.postimg.cc/9fNkQznk/180944489-2711536482471444-1968639298452916963-n.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="absolute inset-0 bg-[#1b4f63]/80"></div>
+        <div className="relative container mx-auto px-4 text-center">
+          <img
+            src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
+            alt="Logo"
+            className="h-24 md:h-32 w-24 md:w-32 object-contain mx-auto mb-6 drop-shadow-lg"
+          />
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+            {language === 'ar' ? homeContent.heroTitleAr : homeContent.heroTitleFr}
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 opacity-95 font-medium">
+            {language === 'ar' ? homeContent.heroSloganAr : homeContent.heroSloganFr}
+          </p>
+          <button
+            onClick={handleWhatsApp}
+            className="bg-[#1b4f63] hover:bg-[#163f50] text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 shadow-xl"
+          >
+            {t.home.donate}
+          </button>
+        </div>
+      </section>
+
+      {/* Featured Works (Video + Projects) */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">{t.home.latestWorks}</h2>
+            <button
+              onClick={() => onNavigate('works')}
+              className="text-[#1b4f63] hover:text-[#163f50] font-medium transition-colors"
             >
-              <div className="relative h-72 overflow-hidden">
-                <img
-                  src={ad.images[0]}
-                  alt={language === 'ar' ? ad.titleAr : ad.titleFr}
-                  className="w-full h-full object-cover transition-transform hover:scale-110"
-                />
+              {t.home.viewAll} ←
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Video Card First */}
+            <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-48">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/JK68OciASMM"
+                  title="YouTube video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
               </div>
               <div className="p-6">
-                <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
-                  <Calendar className="w-4 h-4" />
-                  {formatDate(ad.date)}
-                </div>
-                <h3 className={`text-xl font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar' ? ad.titleAr : ad.titleFr}
+                <h3 className={`text-xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {language === 'ar' ? 'فيديو تعريفي' : 'Vidéo de présentation'}
                 </h3>
+                <p className={`text-gray-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {language === 'ar'
+                    ? 'تعرف على أنشطة الجمعية وجهودها في خدمة المجتمع'
+                    : 'Découvrez les activités et les efforts de l’association'}
+                </p>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {selectedAd && (
-        <div
-          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedAd(null)}
-        >
-          <div
-            className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-6 md:p-8">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex-1">
-                  <h2 className={`text-2xl md:text-3xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {language === 'ar' ? selectedAd.titleAr : selectedAd.titleFr}
-                  </h2>
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <Calendar className="w-4 h-4" />
-                    {formatDate(selectedAd.date)}
-                  </div>
+            {/* Existing Works */}
+            {featuredWorks.map((work, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => onNavigate('works')}
+              >
+                <img
+                  src={work.images[0]}
+                  alt={language === 'ar' ? work.titleAr : work.titleFr}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className={`text-xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {language === 'ar' ? work.titleAr : work.titleFr}
+                  </h3>
+                  <p className={`text-gray-600 line-clamp-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {language === 'ar' ? work.descriptionAr : work.descriptionFr}
+                  </p>
                 </div>
-                <button
-                  onClick={() => setSelectedAd(null)}
-                  className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
-                >
-                  ×
-                </button>
               </div>
-
-              <div className="grid grid-cols-1 gap-4">
-                {selectedAd.images.map((image, idx) => (
-                  <img
-                    key={idx}
-                    src={image}
-                    alt={`${language === 'ar' ? selectedAd.titleAr : selectedAd.titleFr} - ${idx + 1}`}
-                    className="w-full rounded-lg"
-                  />
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
-      )}
+      </section>
+
+      {/* Advertisements Section */}
+      <section className="py-12 bg-[#e6f2f5]">
+        <Advertisements />
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-xl transition-shadow"
+                >
+                  <Icon className="w-10 h-10 mx-auto mb-3 text-[#1b4f63]" />
+                  <div className="text-3xl font-bold text-[#1b4f63] mb-2">
+                    {language === 'ar' ? stat.numberAr : stat.numberFr}
+                  </div>
+                  <div className="text-gray-600 text-sm font-medium">
+                    {language === 'ar' ? stat.labelAr : stat.labelFr}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
