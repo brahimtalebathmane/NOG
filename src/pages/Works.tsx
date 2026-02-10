@@ -49,6 +49,7 @@ export const Works = () => {
   return (
     <div className="py-12">
       <div className="container mx-auto px-4">
+
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             {language === 'ar' ? 'أعمالنا وأنشطتنا' : 'Nos activités'}
@@ -62,6 +63,27 @@ export const Works = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          {/* 🎬 Video Card - First */}
+          <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all">
+            <div className="relative h-56">
+              <iframe
+                className="w-full h-full"
+                src="https://www.youtube.com/embed/JK68OciASMM"
+                title="YouTube video"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+            <div className="p-6">
+              <h3 className={`text-xl font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
+                {language === 'ar' ? 'فيديو تعريفي بالجمعية' : 'Vidéo de présentation de l’association'}
+              </h3>
+            </div>
+          </div>
+
+          {/* Existing Works */}
           {works.map((work, index) => (
             <div
               key={index}
