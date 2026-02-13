@@ -5,7 +5,7 @@ import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { About } from './pages/About';
 import { Works } from './pages/Works';
-import { Advertisements } from './pages/Advertisements';
+import Advertisements from './pages/Advertisements';
 import { Legal } from './pages/Legal';
 import { Donate } from './pages/Donate';
 import { Admin } from './pages/Admin';
