@@ -72,23 +72,41 @@ export const Footer = ({ onNavigate }: FooterProps) => {
           </div>
         </div>
 
-        {/* Financial Info */}
-        <div className="border-t border-white/30 mt-8 pt-8">
-          <h3 className="text-center text-lg font-bold mb-4 text-white">
-            {language === 'ar' ? 'المعلومات المالية' : 'Informations financières'}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto text-gray-200 text-sm">
-            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <p><span className="font-semibold">{language === 'ar' ? 'الترخيص:' : 'Licence:'}</span> FA 010000211309202203328</p>
-              <p><span className="font-semibold">{language === 'ar' ? 'رقم الحساب البنكي الدولي:' : 'IBAN:'}</span> MR1300018000082100067620171</p>
-            </div>
-            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <p><span className="font-semibold">{language === 'ar' ? 'بنكيلي:' : 'Bank:'}</span> 36606886 +222</p>
-              <p><span className="font-semibold">{language === 'ar' ? 'مصرفي:' : 'Bank ID:'}</span> 44444555 +222</p>
-              <p><span className="font-semibold">{language === 'ar' ? 'السداد:' : 'Payment:'}</span> 03650</p>
-            </div>
-          </div>
-        </div>
+{/* Financial Info */}
+<div className="border-t border-white/30 mt-8 pt-8">
+  <h3 className="text-center text-lg font-bold mb-4 text-white">
+    {language === 'ar' ? 'المعلومات المالية' : 'Informations financières'}
+  </h3>
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto text-gray-200 text-sm">
+    {/* License & IBAN */}
+    <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+      <p>
+        <span className="font-semibold">{language === 'ar' ? 'الترخيص:' : 'Licence:'}</span> 
+        FA 010000211309202203328
+      </p>
+      <p>
+        <span className="font-semibold">{language === 'ar' ? 'رقم الحساب البنكي الدولي:' : 'IBAN:'}</span> 
+        MR13 0001 8000 0821 0006 7620 171
+      </p>
+    </div>
+
+    {/* Bank Accounts */}
+    <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+      <p>
+        <span className="font-semibold">{language === 'ar' ? 'بنكيلي:' : 'Bank:'}</span> 
+        +222 36 60 68 86
+      </p>
+      <p>
+        <span className="font-semibold">{language === 'ar' ? 'مصرفي:' : 'Bank ID:'}</span> 
+        +222 44 44 45 55
+      </p>
+      <p>
+        <span className="font-semibold">{language === 'ar' ? 'السداد:' : 'Payment:'}</span> 03650
+      </p>
+    </div>
+  </div>
+</div>
+
 
         {/* Rights */}
         <div className="border-t border-white/30 mt-8 pt-6 text-center">
