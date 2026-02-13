@@ -5,9 +5,9 @@ import { translations } from '../translations';
 interface Advertisement {
   titleAr: string;
   titleFr: string;
-  descriptionAr: string;
-  descriptionFr: string;
-  image: string;
+  descriptionAr?: string;
+  descriptionFr?: string;
+  images: string[]; // بدل image واحد
   link?: string;
 }
 
@@ -34,29 +34,26 @@ const Advertisements = () => {
   if (!ads.length) return null;
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      {/* Section Header */}
+    <div className="container mx-auto px-4">
       <div className="mb-10 text-center">
         <h2 className="text-3xl font-bold text-[#1b4f63]">
           {language === 'ar' ? 'الإعلانات' : 'Annonces'}
         </h2>
-        <div className="w-24 h-1 bg-[#c05321] mx-auto mt-3 rounded-full"></div>
+        <div className="w-20 h-1 bg-[#c05321] mx-auto mt-3 rounded-full"></div>
       </div>
 
-      {/* Ads Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {ads.map((ad, index) => (
           <div
             key={index}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all transform hover:-translate-y-1"
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all"
           >
+            {/* عرض أول صورة في المصفوفة */}
             <img
-              src={ad.image}
+              src={ad.images[0]}
               alt={language === 'ar' ? ad.titleAr : ad.titleFr}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/images/ads/fallback.png';
-              }}
-              className="w-full h-52 object-cover"
+              className="w-full h-48 object-cover"
+              onError={(e) => { (e.target as HTMLImageElement).src = '/images/ads/fallback.png'; }}
             />
 
             <div className="p-6">
@@ -68,18 +65,24 @@ const Advertisements = () => {
                 {language === 'ar' ? ad.titleAr : ad.titleFr}
               </h3>
 
-              <p
-                className={`text-gray-600 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}
-              >
-                {language === 'ar' ? ad.descriptionAr : ad.descriptionFr}
-              </p>
+              { (ad.descriptionAr || ad.descriptionFr) && (
+                <p
+                  className={`text-gray-600 mb-4 ${
+                    isRTL ? 'text-right' : 'text-left'
+                  }`}
+                >
+                  {language === 'ar'
+                    ? ad.descriptionAr
+                    : ad.descriptionFr}
+                </p>
+              )}
 
               {ad.link && (
                 <a
                   href={ad.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block bg-[#c05321] hover:bg-[#a7441a] text-white px-5 py-2 rounded-lg font-medium transition-colors"
+                  className="inline-block bg-[#c05321] hover:bg-[#a7441a] text-white px-4 py-2 rounded-lg transition-colors"
                 >
                   {language === 'ar' ? 'عرض المزيد' : 'Voir plus'}
                 </a>
