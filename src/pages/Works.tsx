@@ -78,7 +78,7 @@ export const Works = () => {
             </div>
             <div className="p-6">
               <h3 className={`text-xl font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
-                {language === 'ar' ? 'فيديو تعريفي بالجمعية' : 'Vidéo de présentation de l’association'}
+                {language === 'ar' ? 'تقسيمات على الأسر المتعففة' : 'Vidéo de présentation de l’association'}
               </h3>
             </div>
           </div>
