@@ -144,7 +144,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
               </div>
               <div className="p-6">
                 <h3 className={`text-xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar' ? 'فيديو تعريفي' : 'Vidéo de présentation'}
+                  {language === 'ar' ? 'تقسيمات على الأسر المتعففة' : 'Vidéo de présentation'}
                 </h3>
                 <p className={`text-gray-600 ${isRTL ? 'text-right' : 'text-left'}`}>
                   {language === 'ar'
