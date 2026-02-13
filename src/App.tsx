@@ -44,12 +44,17 @@ function App() {
 
   return (
     <LanguageProvider>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="min-h-screen flex flex-col bg-gray-50">
         {!isAdminPage && <Header currentPage={currentPage} onNavigate={setCurrentPage} />}
         <main className="flex-grow">
           {renderPage()}
         </main>
-        {!isAdminPage && <Footer onNavigate={setCurrentPage} />}
+        {!isAdminPage && (
+          <Footer
+            onNavigate={setCurrentPage}
+            className="bg-[#1b4f63] text-white"
+          />
+        )}
       </div>
     </LanguageProvider>
   );
