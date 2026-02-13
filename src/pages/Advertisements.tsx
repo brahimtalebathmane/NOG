@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Heart, Users, Droplet, HandHeart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
-import { Advertisements } from './Advertisements'; // استدعاء مكون الإعلانات
+import Advertisements from './Advertisements'; // ✅ تم التصحيح هنا
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -116,7 +116,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
         </div>
       </section>
 
-      {/* Featured Works (Video + Projects) */}
+      {/* Featured Works */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
@@ -130,31 +130,6 @@ export const Home = ({ onNavigate }: HomeProps) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Video Card First */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
-              <div className="relative h-48">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/JK68OciASMM"
-                  title="YouTube video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="p-6">
-                <h3 className={`text-xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar' ? 'فيديو تعريفي' : 'Vidéo de présentation'}
-                </h3>
-                <p className={`text-gray-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar'
-                    ? 'تعرف على أنشطة الجمعية وجهودها في خدمة المجتمع'
-                    : 'Découvrez les activités et les efforts de l’association'}
-                </p>
-              </div>
-            </div>
-
-            {/* Existing Works */}
             {featuredWorks.map((work, index) => (
               <div
                 key={index}
