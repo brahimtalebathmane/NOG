@@ -11,7 +11,7 @@ export const Footer = ({ onNavigate }: FooterProps) => {
   const t = translations[language];
 
   const handleWhatsApp = () => {
-    window.open('https://wa.me/22244444455', '_blank');
+    window.open('https://wa.me/22244444555', '_blank');
   };
 
   return (
