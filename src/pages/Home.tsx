@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Heart, Users, Droplet, HandHeart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
-import { Advertisements } from './Advertisements';
+import Advertisements from './Advertisements'; // ✅ تم التصحيح هنا
 
 interface HomeProps {
   onNavigate: (page: string) => void;
@@ -83,7 +83,6 @@ export const Home = ({ onNavigate }: HomeProps) => {
 
   return (
     <div>
-
       {/* Hero Section */}
       <section
         className="relative text-white py-20 md:py-32"
@@ -95,26 +94,22 @@ export const Home = ({ onNavigate }: HomeProps) => {
           backgroundRepeat: 'no-repeat',
         }}
       >
-        <div className="absolute inset-0 bg-[#1b4f63]/85"></div>
-
+        <div className="absolute inset-0 bg-[#1b4f63]/80"></div>
         <div className="relative container mx-auto px-4 text-center">
           <img
             src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
             alt="Logo"
             className="h-24 md:h-32 w-24 md:w-32 object-contain mx-auto mb-6 drop-shadow-lg"
           />
-
           <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
             {language === 'ar' ? homeContent.heroTitleAr : homeContent.heroTitleFr}
           </h1>
-
           <p className="text-xl md:text-2xl mb-8 opacity-95 font-medium">
             {language === 'ar' ? homeContent.heroSloganAr : homeContent.heroSloganFr}
           </p>
-
           <button
             onClick={handleWhatsApp}
-            className="bg-[#c05321] hover:bg-[#a8441c] text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 shadow-xl"
+            className="bg-[#1b4f63] hover:bg-[#163f50] text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 shadow-xl"
           >
             {t.home.donate}
           </button>
@@ -122,51 +117,23 @@ export const Home = ({ onNavigate }: HomeProps) => {
       </section>
 
       {/* Featured Works */}
-      <section className="py-16 bg-white">
+      <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-[#1b4f63]">
-              {t.home.latestWorks}
-            </h2>
-
+            <h2 className="text-3xl font-bold text-gray-900">{t.home.latestWorks}</h2>
             <button
               onClick={() => onNavigate('works')}
-              className="text-[#1b4f63] hover:text-[#c05321] font-medium transition-colors"
+              className="text-[#1b4f63] hover:text-[#163f50] font-medium transition-colors"
             >
               {t.home.viewAll} ←
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            {/* Video Card */}
-            <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow border border-gray-100">
-              <div className="relative h-48">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/JK68OciASMM"
-                  title="YouTube video"
-                  frameBorder="0"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="p-6">
-                <h3 className={`text-xl font-bold mb-2 text-[#1b4f63] ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar' ? 'تقسيمات على الأسر المتعففة' : 'Vidéo de présentation'}
-                </h3>
-                <p className={`text-gray-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar'
-                    ? 'تعرف على أنشطة الجمعية وجهودها في خدمة المجتمع'
-                    : 'Découvrez les activités et les efforts de l’association'}
-                </p>
-              </div>
-            </div>
-
-            {/* Dynamic Works */}
             {featuredWorks.map((work, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer border border-gray-100"
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
                 onClick={() => onNavigate('works')}
               >
                 <img
@@ -175,7 +142,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-2 text-[#1b4f63] ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <h3 className={`text-xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {language === 'ar' ? work.titleAr : work.titleFr}
                   </h3>
                   <p className={`text-gray-600 line-clamp-3 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -188,12 +155,12 @@ export const Home = ({ onNavigate }: HomeProps) => {
         </div>
       </section>
 
-      {/* Advertisements */}
-      <section className="py-12 bg-[#f0f7f9]">
+      {/* Advertisements Section */}
+      <section className="py-12 bg-[#e6f2f5]">
         <Advertisements />
       </section>
 
-      {/* Stats */}
+      {/* Stats Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
@@ -205,11 +172,9 @@ export const Home = ({ onNavigate }: HomeProps) => {
                   className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-xl transition-shadow"
                 >
                   <Icon className="w-10 h-10 mx-auto mb-3 text-[#1b4f63]" />
-
-                  <div className="text-3xl font-bold text-[#c05321] mb-2">
+                  <div className="text-3xl font-bold text-[#1b4f63] mb-2">
                     {language === 'ar' ? stat.numberAr : stat.numberFr}
                   </div>
-
                   <div className="text-gray-600 text-sm font-medium">
                     {language === 'ar' ? stat.labelAr : stat.labelFr}
                   </div>
@@ -219,68 +184,6 @@ export const Home = ({ onNavigate }: HomeProps) => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-[#1b4f63] text-white mt-16">
-        <div className="container mx-auto px-4 py-12">
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <div className="flex items-center gap-3 mb-4">
-                <img
-                  src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
-                  alt="Logo"
-                  className="h-12 w-12 object-contain"
-                />
-                <h3 className="text-xl font-bold">{t.footer.associationName}</h3>
-              </div>
-
-              <p className="text-gray-200 leading-relaxed">
-                {language === 'ar'
-                  ? 'جمعية خيرية إنسانية تعمل في جميع مناطق موريتانيا'
-                  : 'Association caritative opérant dans toutes les régions de Mauritanie'}
-              </p>
-            </div>
-
-            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <h3 className="text-lg font-bold mb-4">{t.footer.quickLinks}</h3>
-              <div className="flex flex-col gap-2">
-                <button onClick={() => onNavigate('home')} className="hover:text-[#c05321] transition-colors">
-                  {t.nav.home}
-                </button>
-                <button onClick={() => onNavigate('about')} className="hover:text-[#c05321] transition-colors">
-                  {t.nav.about}
-                </button>
-                <button onClick={() => onNavigate('works')} className="hover:text-[#c05321] transition-colors">
-                  {t.nav.works}
-                </button>
-                <button onClick={() => onNavigate('legal')} className="hover:text-[#c05321] transition-colors">
-                  {t.nav.legal}
-                </button>
-              </div>
-            </div>
-
-            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <h3 className="text-lg font-bold mb-4">{t.footer.contact}</h3>
-              <button
-                onClick={handleWhatsApp}
-                className="bg-[#c05321] text-white px-6 py-3 rounded-lg hover:bg-[#a8441c] transition-colors font-medium w-full"
-              >
-                {t.nav.contact}
-              </button>
-            </div>
-          </div>
-
-          <div className="border-t border-[#163f50] mt-8 pt-8 text-center">
-            <p className="text-gray-200">
-              {t.footer.rights} © 2024 {t.footer.associationName}{' '}
-              <Heart className="w-4 h-4 text-[#c05321] inline" />
-            </p>
-          </div>
-        </div>
-      </footer>
-
     </div>
   );
 };
