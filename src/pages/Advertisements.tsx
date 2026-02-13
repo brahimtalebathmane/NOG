@@ -1,189 +1,94 @@
 import { useEffect, useState } from 'react';
-import { Heart, Users, Droplet, HandHeart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
-import Advertisements from './Advertisements'; // ✅ تم التصحيح هنا
 
-interface HomeProps {
-  onNavigate: (page: string) => void;
-}
-
-interface Work {
+interface Advertisement {
   titleAr: string;
   titleFr: string;
   descriptionAr: string;
   descriptionFr: string;
-  images: string[];
-  featured: boolean;
+  image: string;
+  link?: string;
 }
 
-export const Home = ({ onNavigate }: HomeProps) => {
+const Advertisements = () => {
   const { language, isRTL } = useLanguage();
   const t = translations[language];
-  const [homeContent, setHomeContent] = useState<any>(null);
-  const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
+
+  const [ads, setAds] = useState<Advertisement[]>([]);
 
   useEffect(() => {
-    fetch('/content/pages/home.json')
+    fetch('/content/advertisements/index.json')
       .then(res => res.json())
-      .then(data => setHomeContent(data))
-      .catch(err => console.error('Error loading home content:', err));
-
-    fetch('/content/works/index.json')
-      .then(res => res.json())
-      .then(fileNames => {
+      .then((fileNames: string[]) => {
         return Promise.all(
           fileNames.map((fileName: string) =>
-            fetch(`/content/works/${fileName}.json`).then(res => res.json())
+            fetch(`/content/advertisements/${fileName}.json`).then(res => res.json())
           )
         );
       })
-      .then(works => {
-        setFeaturedWorks(works.filter(w => w.featured).slice(0, 3));
-      })
-      .catch(err => console.error('Error loading works:', err));
+      .then(data => setAds(data))
+      .catch(err => console.error('Error loading advertisements:', err));
   }, []);
 
-  const handleWhatsApp = () => {
-    window.open('https://wa.me/22244444455', '_blank');
-  };
-
-  const stats = [
-    {
-      icon: Heart,
-      numberAr: '١٠٠+',
-      numberFr: '100+',
-      labelAr: 'مشروع خيري',
-      labelFr: 'Projets caritatifs'
-    },
-    {
-      icon: Users,
-      numberAr: '٥٠٠٠+',
-      numberFr: '5000+',
-      labelAr: 'أسرة مستفيدة',
-      labelFr: 'Familles bénéficiaires'
-    },
-    {
-      icon: Droplet,
-      numberAr: '٣٨',
-      numberFr: '38',
-      labelAr: 'بئر محفور',
-      labelFr: 'Puits creusés'
-    },
-    {
-      icon: HandHeart,
-      numberAr: '٢٠٠+',
-      numberFr: '200+',
-      labelAr: 'متطوع',
-      labelFr: 'Bénévoles'
-    }
-  ];
-
-  if (!homeContent) return null;
+  if (!ads.length) return null;
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section
-        className="relative text-white py-20 md:py-32"
-        style={{
-          backgroundImage:
-            "url('https://i.postimg.cc/9fNkQznk/180944489-2711536482471444-1968639298452916963-n.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
-        <div className="absolute inset-0 bg-[#1b4f63]/80"></div>
-        <div className="relative container mx-auto px-4 text-center">
-          <img
-            src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
-            alt="Logo"
-            className="h-24 md:h-32 w-24 md:w-32 object-contain mx-auto mb-6 drop-shadow-lg"
-          />
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-            {language === 'ar' ? homeContent.heroTitleAr : homeContent.heroTitleFr}
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-95 font-medium">
-            {language === 'ar' ? homeContent.heroSloganAr : homeContent.heroSloganFr}
-          </p>
-          <button
-            onClick={handleWhatsApp}
-            className="bg-[#1b4f63] hover:bg-[#163f50] text-white px-8 py-4 rounded-lg text-lg font-bold transition-all transform hover:scale-105 shadow-xl"
+    <div className="container mx-auto px-4">
+      <div className="mb-10 text-center">
+        <h2 className="text-3xl font-bold text-[#1b4f63]">
+          {language === 'ar' ? 'الإعلانات' : 'Annonces'}
+        </h2>
+        <div className="w-20 h-1 bg-[#c05321] mx-auto mt-3 rounded-full"></div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {ads.map((ad, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all"
           >
-            {t.home.donate}
-          </button>
-        </div>
-      </section>
+            <img
+              src={ad.image}
+              alt={language === 'ar' ? ad.titleAr : ad.titleFr}
+              className="w-full h-48 object-cover"
+            />
 
-      {/* Featured Works */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">{t.home.latestWorks}</h2>
-            <button
-              onClick={() => onNavigate('works')}
-              className="text-[#1b4f63] hover:text-[#163f50] font-medium transition-colors"
-            >
-              {t.home.viewAll} ←
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredWorks.map((work, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
-                onClick={() => onNavigate('works')}
+            <div className="p-6">
+              <h3
+                className={`text-xl font-bold mb-2 text-[#1b4f63] ${
+                  isRTL ? 'text-right' : 'text-left'
+                }`}
               >
-                <img
-                  src={work.images[0]}
-                  alt={language === 'ar' ? work.titleAr : work.titleFr}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className={`text-xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {language === 'ar' ? work.titleAr : work.titleFr}
-                  </h3>
-                  <p className={`text-gray-600 line-clamp-3 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    {language === 'ar' ? work.descriptionAr : work.descriptionFr}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+                {language === 'ar' ? ad.titleAr : ad.titleFr}
+              </h3>
 
-      {/* Advertisements Section */}
-      <section className="py-12 bg-[#e6f2f5]">
-        <Advertisements />
-      </section>
+              <p
+                className={`text-gray-600 mb-4 ${
+                  isRTL ? 'text-right' : 'text-left'
+                }`}
+              >
+                {language === 'ar'
+                  ? ad.descriptionAr
+                  : ad.descriptionFr}
+              </p>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-white p-6 rounded-xl shadow-md text-center hover:shadow-xl transition-shadow"
+              {ad.link && (
+                <a
+                  href={ad.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-[#c05321] hover:bg-[#a7441a] text-white px-4 py-2 rounded-lg transition-colors"
                 >
-                  <Icon className="w-10 h-10 mx-auto mb-3 text-[#1b4f63]" />
-                  <div className="text-3xl font-bold text-[#1b4f63] mb-2">
-                    {language === 'ar' ? stat.numberAr : stat.numberFr}
-                  </div>
-                  <div className="text-gray-600 text-sm font-medium">
-                    {language === 'ar' ? stat.labelAr : stat.labelFr}
-                  </div>
-                </div>
-              );
-            })}
+                  {language === 'ar' ? 'عرض المزيد' : 'Voir plus'}
+                </a>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
     </div>
   );
 };
+
+export default Advertisements;
