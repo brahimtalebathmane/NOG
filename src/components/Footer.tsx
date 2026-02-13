@@ -62,7 +62,7 @@ export const Footer = ({ onNavigate }: FooterProps) => {
               className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors mb-4"
             >
               <MessageCircle className="w-5 h-5" />
-              <span>+222 44 44 44 55</span>
+              <span>+222 44 44 45 55</span>
             </button>
             <button
               onClick={handleWhatsApp}
