@@ -83,7 +83,7 @@ export const Footer = ({ onNavigate }: FooterProps) => {
               <p><span className="font-semibold">{language === 'ar' ? 'رقم الحساب البنكي الدولي:' : 'IBAN:'}</span> MR1300018000082100067620171</p>
             </div>
             <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <p><span className="font-semibold">{language === 'ar' ? 'بنكيلي:' : 'Bank:'}</span> +222 36606886</p>
+              <p><span className="font-semibold">{language === 'ar' ? 'بنكيلي:' : 'Bank:'}</span> 36606886 +222</p>
               <p><span className="font-semibold">{language === 'ar' ? 'مصرفي:' : 'Bank ID:'}</span> +222 44444555</p>
               <p><span className="font-semibold">{language === 'ar' ? 'السداد:' : 'Payment:'}</span> 03650</p>
             </div>
