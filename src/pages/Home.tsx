@@ -1,5 +1,6 @@
 // src/pages/Home.tsx
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState, useRef } from 'react';
 import { Heart, Users, Droplet, HandHeart } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
@@ -18,11 +19,39 @@ interface Work {
   featured: boolean;
 }
 
+/* ===== 3D Reveal Hook ===== */
+const useReveal3D = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add('reveal-active');
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return ref;
+};
+
 export const Home = ({ onNavigate }: HomeProps) => {
   const { language, isRTL } = useLanguage();
   const t = translations[language];
   const [homeContent, setHomeContent] = useState<any>(null);
   const [featuredWorks, setFeaturedWorks] = useState<Work[]>([]);
+
+  const heroRef = useReveal3D();
+  const worksRef = useReveal3D();
+  const statsRef = useReveal3D();
 
   useEffect(() => {
     fetch('/content/pages/home.json')
@@ -56,6 +85,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
 
   return (
     <div>
+
       {/* Hero Section */}
       <section
         className="relative text-white py-24 md:py-36 flex items-center justify-center"
@@ -66,32 +96,43 @@ export const Home = ({ onNavigate }: HomeProps) => {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-[#1b4f63]/90 via-[#1b4f63]/70 to-[#1b4f63]/80"></div>
-        <div className="relative text-center px-4 max-w-3xl">
+
+        <div
+          ref={heroRef}
+          className="relative text-center px-4 max-w-3xl reveal-3d"
+        >
           <img
             src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
             alt="Logo"
             className="h-28 w-28 md:h-36 md:w-36 object-contain mx-auto mb-6 drop-shadow-lg"
           />
+
           <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
             {language === 'ar' ? homeContent.heroTitleAr : homeContent.heroTitleFr}
           </h1>
+
           <p className="text-xl md:text-2xl mb-8 opacity-95 font-medium">
             {language === 'ar' ? homeContent.heroSloganAr : homeContent.heroSloganFr}
           </p>
+
           <button
             onClick={handleWhatsApp}
-            className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-blue-500 hover:to-green-500 text-white px-10 py-4 rounded-2xl text-lg font-bold transition-transform transform hover:scale-105 shadow-xl"
+            className="bg-[#c05321] hover:bg-[#a7441a] text-white px-10 py-4 rounded-2xl text-lg font-bold shadow-xl transition-all duration-300 hover:scale-105"
           >
             {t.home.donate}
           </button>
         </div>
       </section>
 
-      {/* Featured Works Section */}
+      {/* Featured Works */}
       <section className="py-16">
-        <div className="container mx-auto px-4">
+        <div ref={worksRef} className="container mx-auto px-4 reveal-3d">
+
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">{t.home.latestWorks}</h2>
+            <h2 className="text-3xl font-bold text-gray-900">
+              {t.home.latestWorks}
+            </h2>
+
             <button
               onClick={() => onNavigate('works')}
               className="text-[#1b4f63] hover:text-[#163f50] font-medium transition-colors"
@@ -101,32 +142,30 @@ export const Home = ({ onNavigate }: HomeProps) => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Intro Video */}
-            <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+
+            {/* Video Card */}
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
               <div className="relative h-52">
                 <iframe
                   className="w-full h-full rounded-t-2xl"
                   src="https://www.youtube.com/embed/JK68OciASMM"
                   title="YouTube video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
               <div className="p-6">
                 <h3 className={`text-xl font-bold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar' ? 'تقسيمات على الأسر المتعففة' : 'Vidéo de présentation'}
+                  {language === 'ar'
+                    ? 'تقسيمات على الأسر المتعففة'
+                    : 'Vidéo de présentation'}
                 </h3>
-                <p className={`text-gray-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {language === 'ar' ? 'تعرف على أنشطة الجمعية وجهودها في خدمة المجتمع' : 'Découvrez les activités et les efforts de l’association'}
-                </p>
               </div>
             </div>
 
             {featuredWorks.map((work, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer"
                 onClick={() => onNavigate('works')}
               >
                 <img
@@ -153,16 +192,16 @@ export const Home = ({ onNavigate }: HomeProps) => {
         <Advertisements />
       </section>
 
-      {/* Stats Section */}
+      {/* Stats */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div ref={statsRef} className="container mx-auto px-4 reveal-3d">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {stats.map((stat, idx) => {
               const Icon = stat.icon;
               return (
                 <div
                   key={idx}
-                  className="bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-shadow"
+                  className="bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
                 >
                   <Icon className="w-10 h-10 mx-auto mb-3 text-[#1b4f63]" />
                   <div className="text-3xl font-bold text-[#1b4f63] mb-2">
@@ -177,6 +216,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
           </div>
         </div>
       </section>
+
     </div>
   );
 };
