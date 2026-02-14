@@ -1,159 +1,123 @@
-// src/components/Footer.tsx
-
-import { Heart, MessageCircle } from 'lucide-react';
+import { useState } from 'react';
+import { Menu, X, Languages } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { translations } from '../translations';
 
-interface FooterProps {
+interface HeaderProps {
+  currentPage: string;
   onNavigate: (page: string) => void;
 }
 
-export const Footer = ({ onNavigate }: FooterProps) => {
-  const { language, isRTL } = useLanguage();
+export const Header = ({ currentPage, onNavigate }: HeaderProps) => {
+  const { language, setLanguage, isRTL } = useLanguage();
   const t = translations[language];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navItems = [
+    { id: 'home', label: t.nav.home },
+    { id: 'about', label: t.nav.about },
+    { id: 'works', label: t.nav.works },
+    { id: 'advertisements', label: t.nav.advertisements },
+    { id: 'legal', label: t.nav.legal },
+  ];
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'ar' ? 'fr' : 'ar');
+    setIsMenuOpen(false);
+  };
 
   const handleWhatsApp = () => {
-    window.open('https://wa.me/22244444555', '_blank');
+    window.open('https://wa.me/22244444455', '_blank');
   };
 
   return (
-    <footer className="bg-gradient-to-r from-[#1b4f63] to-[#163f50] text-white mt-16">
-      <div className="container mx-auto px-4 py-12">
-
-        {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-          {/* Logo & Description */}
-          <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-            <div className="flex items-center gap-3 mb-4">
-              <img
-                src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
-                alt="Logo"
-                className="h-14 w-14 object-contain"
-              />
-              <h3 className="text-xl font-bold">
-                {t.footer.associationName}
-              </h3>
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-[#1b4f63] to-[#163f50] shadow-md">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
+            <img
+              src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
+              alt="Logo"
+              className="h-12 w-12 object-contain"
+            />
+            <div className={`${isRTL ? 'text-right text-white' : 'text-left text-white'}`}>
+              <h1 className="text-lg font-bold leading-tight">
+                {language === 'ar' ? 'مانقص مال من صدقة' : 'Manqass Mal Min Sadaqa'}
+              </h1>
             </div>
-            <p className="text-gray-200 leading-relaxed">
-              {language === 'ar'
-                ? 'جمعية خيرية إنسانية تعمل في جميع مناطق موريتانيا'
-                : 'Association caritative opérant dans toutes les régions de Mauritanie'}
-            </p>
           </div>
 
-          {/* Quick Links */}
-          <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-            <h3 className="text-lg font-bold mb-4">
-              {t.footer.quickLinks}
-            </h3>
-            <div className="flex flex-col gap-2">
-              {['home', 'about', 'works', 'legal'].map((page) => (
+          <nav className="hidden lg:flex items-center gap-6">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => onNavigate(item.id)}
+                className={`font-medium transition-colors ${
+                  currentPage === item.id ? 'text-yellow-400' : 'text-white'
+                } hover:text-yellow-300`}
+              >
+                {item.label}
+              </button>
+            ))}
+            <button
+              onClick={handleWhatsApp}
+              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-blue-500 hover:to-green-500 text-white px-6 py-2 rounded-2xl font-medium transition-transform transform hover:scale-105 shadow-lg"
+            >
+              {t.nav.donate}
+            </button>
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-white text-white hover:bg-white hover:text-[#1b4f63] transition-colors font-medium"
+            >
+              <Languages className="w-5 h-5" />
+              {language === 'ar' ? 'FR' : 'عربي'}
+            </button>
+          </nav>
+
+          <button
+            className="lg:hidden text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {isMenuOpen && (
+          <nav className="lg:hidden py-4 border-t border-white/30 bg-gradient-to-r from-[#1b4f63] to-[#163f50]">
+            <div className="flex flex-col gap-3">
+              {navItems.map((item) => (
                 <button
-                  key={page}
-                  onClick={() => onNavigate(page)}
-                  className="text-gray-200 hover:text-white transition-colors font-medium"
+                  key={item.id}
+                  onClick={() => {
+                    onNavigate(item.id);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    currentPage === item.id
+                      ? 'bg-yellow-400 text-[#163f50]'
+                      : 'text-white hover:bg-white hover:text-[#1b4f63]'
+                  }`}
                 >
-                  {t.nav[page]}
+                  {item.label}
                 </button>
               ))}
+              <button
+                onClick={handleWhatsApp}
+                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-blue-500 hover:to-green-500 text-white px-4 py-2 rounded-2xl font-medium transition-transform transform hover:scale-105 shadow-lg"
+              >
+                {t.nav.donate}
+              </button>
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 border-white text-white hover:bg-white hover:text-[#1b4f63] transition-colors font-medium"
+              >
+                <Languages className="w-5 h-5" />
+                {language === 'ar' ? 'Français' : 'عربي'}
+              </button>
             </div>
-          </div>
-
-          {/* Contact */}
-          <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-            <h3 className="text-lg font-bold mb-4">
-              {t.footer.contact}
-            </h3>
-
-            <button
-              onClick={handleWhatsApp}
-              className="flex items-center gap-2 text-white hover:text-gray-200 transition-colors mb-4"
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span dir="ltr">+222 44 44 45 55</span>
-            </button>
-
-            <button
-              onClick={handleWhatsApp}
-              className="bg-white text-[#1b4f63] px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors font-medium flex items-center gap-2 w-full justify-center"
-            >
-              <MessageCircle className="w-5 h-5" />
-              {t.nav.contact}
-            </button>
-          </div>
-        </div>
-
-        {/* Financial Information */}
-        <div className="border-t border-white/30 mt-10 pt-8">
-          <h3 className="text-center text-lg font-bold mb-6 text-white">
-            {language === 'ar'
-              ? 'المعلومات المالية'
-              : 'Informations financières'}
-          </h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto text-gray-200 text-sm">
-
-            {/* License & IBAN */}
-            <div className={`${isRTL ? 'text-right' : 'text-left'} space-y-2`}>
-              <p>
-                <span className="font-semibold">
-                  {language === 'ar' ? 'الترخيص:' : 'Licence:'}
-                </span>{' '}
-                FA 010000211309202203328
-              </p>
-
-              <p>
-                <span className="font-semibold">
-                  {language === 'ar'
-                    ? 'رقم الحساب البنكي الدولي:'
-                    : 'IBAN:'}
-                </span>{' '}
-                <span dir="ltr" className="inline-block">
-                  MR13 0001 8000 0821 0006 7620 171
-                </span>
-              </p>
-            </div>
-
-            {/* Bankily & Masrivi */}
-            <div className={`${isRTL ? 'text-right' : 'text-left'} space-y-2`}>
-              <p>
-                <span className="font-semibold">
-                  {language === 'ar' ? 'بنكيلي:' : 'Bankily:'}
-                </span>{' '}
-                <span dir="ltr" className="inline-block">
-                  +222 36 60 68 86
-                </span>
-              </p>
-
-              <p>
-                <span className="font-semibold">
-                  {language === 'ar' ? 'مصرفي:' : 'Masrivi:'}
-                </span>{' '}
-                <span dir="ltr" className="inline-block">
-                  +222 44 44 45 55
-                </span>
-              </p>
-
-              <p>
-                <span className="font-semibold">
-                  {language === 'ar' ? 'السداد:' : 'Payment:'}
-                </span>{' '}
-                03650
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Rights */}
-        <div className="border-t border-white/30 mt-10 pt-6 text-center">
-          <p className="text-white flex items-center justify-center gap-2">
-            {t.footer.rights} © 2024 {t.footer.associationName}
-            <Heart className="w-4 h-4 text-red-500 fill-current" />
-          </p>
-        </div>
-
+          </nav>
+        )}
       </div>
-    </footer>
+    </header>
   );
 };
