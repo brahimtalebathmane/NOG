@@ -34,7 +34,12 @@ export const Header = ({ currentPage, onNavigate }: HeaderProps) => {
     <header className="sticky top-0 z-50 bg-gradient-to-r from-[#1b4f63] to-[#163f50] shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavigate('home')}>
+
+          {/* Logo */}
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => onNavigate('home')}
+          >
             <img
               src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
               alt="Logo"
@@ -42,29 +47,43 @@ export const Header = ({ currentPage, onNavigate }: HeaderProps) => {
             />
             <div className={`${isRTL ? 'text-right text-white' : 'text-left text-white'}`}>
               <h1 className="text-lg font-bold leading-tight">
-                {language === 'ar' ? 'مانقص مال من صدقة' : 'Manqass Mal Min Sadaqa'}
+                {language === 'ar'
+                  ? 'مانقص مال من صدقة'
+                  : 'Manqass Mal Min Sadaqa'}
               </h1>
             </div>
           </div>
 
+          {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
                 className={`font-medium transition-colors ${
-                  currentPage === item.id ? 'text-yellow-400' : 'text-white'
+                  currentPage === item.id
+                    ? 'text-yellow-400'
+                    : 'text-white'
                 } hover:text-yellow-300`}
               >
                 {item.label}
               </button>
             ))}
+
+            {/* 🔥 Donate Button - Brand Color */}
             <button
               onClick={handleWhatsApp}
-              className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-blue-500 hover:to-green-500 text-white px-6 py-2 rounded-2xl font-medium transition-transform transform hover:scale-105 shadow-lg"
+              className="bg-[#c05321] hover:bg-[#a7441a] 
+                         text-white px-6 py-2.5 
+                         rounded-xl font-semibold 
+                         shadow-md hover:shadow-lg 
+                         transition-all duration-300 
+                         hover:scale-105"
             >
               {t.nav.donate}
             </button>
+
+            {/* Language Toggle */}
             <button
               onClick={toggleLanguage}
               className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-white text-white hover:bg-white hover:text-[#1b4f63] transition-colors font-medium"
@@ -74,17 +93,22 @@ export const Header = ({ currentPage, onNavigate }: HeaderProps) => {
             </button>
           </nav>
 
+          {/* Mobile Menu Button */}
           <button
             className="lg:hidden text-white"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isMenuOpen
+              ? <X className="w-6 h-6" />
+              : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
+        {/* Mobile Menu */}
         {isMenuOpen && (
           <nav className="lg:hidden py-4 border-t border-white/30 bg-gradient-to-r from-[#1b4f63] to-[#163f50]">
             <div className="flex flex-col gap-3">
+
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -101,12 +125,19 @@ export const Header = ({ currentPage, onNavigate }: HeaderProps) => {
                   {item.label}
                 </button>
               ))}
+
+              {/* 🔥 Donate Button Mobile */}
               <button
                 onClick={handleWhatsApp}
-                className="bg-gradient-to-r from-green-500 to-blue-500 hover:from-blue-500 hover:to-green-500 text-white px-4 py-2 rounded-2xl font-medium transition-transform transform hover:scale-105 shadow-lg"
+                className="bg-[#c05321] hover:bg-[#a7441a] 
+                           text-white px-4 py-2.5 
+                           rounded-xl font-semibold 
+                           shadow-md hover:shadow-lg 
+                           transition-all duration-300"
               >
                 {t.nav.donate}
               </button>
+
               <button
                 onClick={toggleLanguage}
                 className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border-2 border-white text-white hover:bg-white hover:text-[#1b4f63] transition-colors font-medium"
@@ -114,9 +145,11 @@ export const Header = ({ currentPage, onNavigate }: HeaderProps) => {
                 <Languages className="w-5 h-5" />
                 {language === 'ar' ? 'Français' : 'عربي'}
               </button>
+
             </div>
           </nav>
         )}
+
       </div>
     </header>
   );
