@@ -54,6 +54,18 @@ export const Home = ({ onNavigate }: HomeProps) => {
 
   if (!homeContent) return null;
 
+  // مصفوفة أنيميشن لكل عنصر
+  const animations = [
+    'animate-slide-up-1',
+    'animate-slide-up-2',
+    'animate-slide-up-3',
+    'animate-slide-up-4',
+    'animate-slide-up-5',
+    'animate-slide-up-6'
+  ];
+
+  const getAnimation = (idx: number) => animations[idx % animations.length];
+
   return (
     <div>
       {/* Hero Section */}
@@ -70,17 +82,17 @@ export const Home = ({ onNavigate }: HomeProps) => {
           <img
             src="https://i.postimg.cc/J07msSyW/oiljpoml.png"
             alt="Logo"
-            className="h-28 w-28 md:h-36 md:w-36 object-contain mx-auto mb-6 drop-shadow-lg animate-slide-up-1"
+            className={`h-28 w-28 md:h-36 md:w-36 object-contain mx-auto mb-6 drop-shadow-lg ${getAnimation(0)}`}
           />
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-4 leading-tight text-[#c05321] animate-slide-up-2">
+          <h1 className={`text-5xl md:text-7xl font-extrabold mb-4 leading-tight text-[#c05321] ${getAnimation(1)}`}>
             {language === 'ar' ? 'مانقص مال من صدقة' : 'Manqass Mal Min Sadaqa'}
           </h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-95 font-medium animate-slide-up-3">
+          <p className={`text-xl md:text-2xl mb-8 opacity-95 font-medium ${getAnimation(2)}`}>
             {language === 'ar' ? homeContent.heroSloganAr : homeContent.heroSloganFr}
           </p>
           <button
             onClick={handleWhatsApp}
-            className="bg-[#c05321] hover:bg-[#a7441a] text-white px-10 py-4 rounded-2xl text-lg font-bold transition-transform transform hover:scale-105 shadow-xl animate-slide-up-4"
+            className={`bg-[#c05321] hover:bg-[#a7441a] text-white px-10 py-4 rounded-2xl text-lg font-bold transition-transform transform hover:scale-105 shadow-xl ${getAnimation(3)}`}
           >
             {t.home.donate}
           </button>
@@ -91,10 +103,10 @@ export const Home = ({ onNavigate }: HomeProps) => {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 animate-slide-up-1">{t.home.latestWorks}</h2>
+            <h2 className={`text-3xl font-bold text-gray-900 ${getAnimation(4)}`}>{t.home.latestWorks}</h2>
             <button
               onClick={() => onNavigate('works')}
-              className="text-[#1b4f63] hover:text-[#163f50] font-medium transition-colors animate-slide-up-2"
+              className={`text-[#1b4f63] hover:text-[#163f50] font-medium transition-colors ${getAnimation(5)}`}
             >
               {t.home.viewAll} ←
             </button>
@@ -102,7 +114,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Intro Video */}
-            <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow animate-slide-up-3">
+            <div className={`bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow ${getAnimation(0)}`}>
               <div className="relative h-52">
                 <iframe
                   className="w-full h-full rounded-t-2xl"
@@ -126,7 +138,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
             {featuredWorks.map((work, idx) => (
               <div
                 key={idx}
-                className={`bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer animate-slide-up-${(idx % 4) + 1}`}
+                className={`bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer ${getAnimation(idx + 1)}`}
                 onClick={() => onNavigate('works')}
               >
                 <img
@@ -162,7 +174,7 @@ export const Home = ({ onNavigate }: HomeProps) => {
               return (
                 <div
                   key={idx}
-                  className={`bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-shadow animate-slide-up-${(idx % 4) + 1}`}
+                  className={`bg-white p-6 rounded-2xl shadow-md text-center hover:shadow-xl transition-shadow ${getAnimation(idx)}`}
                 >
                   <Icon className="w-10 h-10 mx-auto mb-3 text-[#1b4f63]" />
                   <div className="text-3xl font-bold text-[#1b4f63] mb-2">
